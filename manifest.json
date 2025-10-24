@@ -1,0 +1,16 @@
+{
+  "name": "Trợ lý Học tập AI",
+  "short_name": "AI Học tập",
+  "description": "Một ứng dụng web tương tác được hỗ trợ bởi AI để học Sinh học, Toán học và Hóa học cho mọi cấp độ. Nhận giải thích chi tiết, giải pháp từng bước và các câu đố tùy chỉnh để nâng cao kiến thức của bạn.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
