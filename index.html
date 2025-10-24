@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Chat Gemini</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#0b0f19; color:#fff; margin:0; padding:0; display:flex; justify-content:center; align-items:center; height:100vh; }
+    .container { width:90%; max-width:700px; background:#121829; padding:20px; border-radius:10px; box-shadow:0 0 15px rgba(0,0,0,0.4); }
+    h1 { text-align:center; margin-top:0; color:#8ab4f8; }
+    #chatBox { height:400px; overflow-y:auto; background:#1a2336; padding:10px; border-radius:8px; margin-bottom:10px; }
+    .msg { padding:8px 12px; border-radius:10px; margin:5px 0; max-width:80%; }
+    .user { background:#0057e7; align-self:flex-end; margin-left:auto; }
+    .bot { background:#2a2f45; }
+    #inputBox { display:flex; gap:8px; }
+    input[type=text] { flex:1; padding:10px; border-radius:8px; border:none; outline:none; }
+    button { padding:10px 15px; background:#8ab4f8; border:none; border-radius:8px; cursor:pointer; color:#000; }
+    button:hover { background:#a9c7ff; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💬 AI Chat Gemini</h1>
+    <div id="chatBox"></div>
+    <div id="inputBox">
+      <input type="text" id="userInput" placeholder="Nhập tin nhắn..." />
+      <button id="sendBtn">Gửi</button>
+    </div>
+    <input type="text" id="apiUrl" placeholder="API Proxy (ví dụ: https://your-app.vercel.app/api/ai)" style="width:100%;margin-top:10px;padding:8px;border-radius:6px;border:none;" />
+  </div>
+
+  <script>
+    const chatBox = document.getElementById('chatBox');
+    const sendBtn = document.getElementById('sendBtn');
+    const userInput = document.getElementById('userInput');
+    const apiUrl = document.getElementById('apiUrl');
+
+    function addMessage(text, cls) {
+      const div = document.createElement('div');
+      div.className = 'msg ' + cls;
+      div.textContent = text;
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    sendBtn.onclick = async () => {
+      const msg = userInput.value.trim();
+      if (!msg) return alert("Nhập nội dung trước đã!");
+      const url = apiUrl.value.trim();
+      if (!url) return alert("Nhập URL API Proxy!");
+      addMessage(msg, 'user');
+      userInput.value = '';
+      addMessage('⏳ Đang trả lời...', 'bot');
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ message: msg })
+        });
+        const data = await res.json();
+        document.querySelectorAll('.bot').pop;
+        addMessage(data.reply || JSON.stringify(data), 'bot');
+      } catch (e) {
+        addMessage('❌ Lỗi: ' + e.message, 'bot');
+      }
+    };
+  </script>
+</body>
+</html>
